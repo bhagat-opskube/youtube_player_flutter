@@ -50,14 +50,22 @@ class _YoutubePlayerBuilderState extends State<YoutubePlayerBuilder>
   void didChangeMetrics() {
     final physicalSize = SchedulerBinding.instance.window.physicalSize;
     final controller = widget.player.controller;
-    if (physicalSize.width > physicalSize.height) {
-      controller.updateValue(controller.value.copyWith(isFullScreen: true));
-      SystemChrome.setEnabledSystemUIOverlays([]);
-      if (widget.onEnterFullScreen != null) widget.onEnterFullScreen();
-    } else {
-      controller.updateValue(controller.value.copyWith(isFullScreen: false));
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-      if (widget.onExitFullScreen != null) widget.onExitFullScreen();
+    if(widget.player.onlyFullScreen)
+      {
+        controller.updateValue(controller.value.copyWith(isFullScreen: true));
+        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top,SystemUiOverlay.bottom]);
+        if (widget.onEnterFullScreen != null) widget.onEnterFullScreen();
+      }
+    else {
+      if (physicalSize.width > physicalSize.height) {
+        controller.updateValue(controller.value.copyWith(isFullScreen: true));
+        SystemChrome.setEnabledSystemUIOverlays([]);
+        if (widget.onEnterFullScreen != null) widget.onEnterFullScreen();
+      } else {
+        controller.updateValue(controller.value.copyWith(isFullScreen: false));
+        SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+        if (widget.onExitFullScreen != null) widget.onExitFullScreen();
+      }
     }
     super.didChangeMetrics();
   }
@@ -69,7 +77,14 @@ class _YoutubePlayerBuilderState extends State<YoutubePlayerBuilder>
       child: WillPopScope(
         onWillPop: () async {
           final controller = widget.player.controller;
-          if (controller.value.isFullScreen) {
+          if(widget.player.onlyFullScreen) {
+            SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top,SystemUiOverlay.bottom]);
+            SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+            if (widget.onExitFullScreen != null) widget.onExitFullScreen();
+            return true;
+          }
+
+          if (controller.value.isFullScreen ) {
             widget.player.controller.toggleFullScreenMode();
             return false;
           }

@@ -132,6 +132,13 @@ class YoutubePlayer extends StatefulWidget {
   /// {@endtemplate}
   final bool showVideoProgressIndicator;
 
+  /// {@template youtube_player_flutter.onlyFullScreen}
+  /// Defines whether to show video only in full screen.
+  ///
+  /// Default is false.
+  /// {@endtemplate}
+  final bool onlyFullScreen;
+
   /// Creates [YoutubePlayer] widget.
   const YoutubePlayer({
     this.key,
@@ -150,6 +157,7 @@ class YoutubePlayer extends StatefulWidget {
     this.actionsPadding = const EdgeInsets.all(8.0),
     this.thumbnail,
     this.showVideoProgressIndicator = false,
+    this.onlyFullScreen = false,
   });
 
   /// Converts fully qualified YouTube Url to video id.
