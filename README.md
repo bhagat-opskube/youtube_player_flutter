@@ -103,6 +103,28 @@ YoutubePlayerBuilder(
 ),
 ```
 
+#### For Only FullScreen Support
+If only fullscreen support is required, set `onlyFullScreen` to `true` in `YoutubePlayer`
+
+```dart
+YoutubePlayerBuilder(
+    player: YoutubePlayer(
+        controller: _controller,
+        onlyFullScreen:true
+    ),
+    builder: (context, player){
+        return Column(
+            children: [
+                // some widgets
+                player,
+                //some other widgets
+            ],
+        );
+    ),
+),
+```
+
+
          
 #### Playing live stream videos
 Set the isLive property to true in order to change the UI to match Live Video.
